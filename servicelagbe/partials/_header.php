@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(isset($_SESSION['loggedin'])){
-    header("location: http://localhost/servicelagbe/postLogin/loggedinIndex.php");
+    header("location: http://localhost/servicelagbe/postLogin/postuserlogin.php");
 }
 echo'
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">

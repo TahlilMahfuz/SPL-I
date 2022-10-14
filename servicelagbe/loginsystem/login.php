@@ -16,8 +16,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 session_start();
                 $_SESSION['loggedin'] = true;
                 $_SESSION['email'] = $email;
-                $queryusername="Select username from users where email='$email'";
-                $resultq = $conn->query($queryusername);
+                // $queryusername="Select username from users where email='$email'";
+                // $resultq = $conn->query($queryusername);
                 $_SESSION['username'] = $row["username"];
                 header("location: welcome.php");
             } 
@@ -67,8 +67,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </div> ';
     }
     ?>
-
-    <div class="container my-4">
+    <div class="container-fluid my-2">
+        <div class="card shadow mb-4"> 
+        <div class="container my-4">
         <h1 class="text-center">Login to ServiceLagbe</h1>
         <form action="/servicelagbe/loginsystem/login.php" method="post">
             <div class="form-group">
@@ -87,6 +88,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <a href="/servicelagbe/serviceproviders/providerlogin.php"  class="btn btn-info">Click here to login as ServiceProvider</a>
         </form>
     </div>
+        </div>
+    </div>
+    
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -102,3 +106,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </body>
 
 </html>
+
+
+
+<!-- <div class="container-fluid">
+        <div class="card shadow mb-4"> 
+
+        </div>
+    </div> -->
