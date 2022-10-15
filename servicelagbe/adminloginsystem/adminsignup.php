@@ -111,7 +111,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             <button type="submit" class="btn btn-primary">SignUp</button><br><br>
             <a href="/servicelagbe/serviceproviders/providersignup.php"  class="btn btn-info">Click here to signup as ServiceProvider</a>
-            <a href="/servicelagbe/loginsystem/login.php"  class="btn btn-info">Click here to signup as Client</a>
+            <a href="/servicelagbe/loginsystem/signup.php"  class="btn btn-info">Click here to signup as Client</a>
         </form>
     </div>
 

@@ -6,65 +6,20 @@ if(isset($_POST['delete_btn']))
 {
     $id = $_POST['delete_id'];
     
-    $query = "DELETE FROM serviceproviders WHERE providerid='$id' ";
+    $query = "DELETE FROM approvedserviceproviders WHERE approvedproviderid='$id' ";
     $query_run = mysqli_query($conn, $query);
     
     if($query_run)
     {
-        session_start();
-        $_SESSION['deletedprovider'] = "Service Provider Removed";
+        $_SESSION['deletedapprovedprovider'] = "Service Provider Removed";
     }
     else
     {
-        $_SESSION['deletedprovidererror'] = "Sorry, Deletion could be processed. Something went wrong";
+        $_SESSION['deletedapprovedprovidererror'] = "Sorry, Deletion could be processed. Something went wrong";
     }    
 }
-
-if(isset($_POST['add_btn']))
-{
-    $id = $_POST['add_id'];
-    $servicetype = $_POST['servicetype'];
-    
-    $query1 = "SELECT * FROM serviceproviders WHERE providerid='$id' ";
-    $query2 = "DELETE FROM serviceproviders WHERE providerid='$id' ";
-
-    $query_run1 = mysqli_query($conn, $query1);
-    if(mysqli_num_rows($query_run1)==1 && $servicetype!="Choose..."){
-        while($row = mysqli_fetch_assoc($query_run1)){
-            $approvedproviderid = $row["providerid"];
-            $username = $row["username"];
-            $email = $row["email"];
-            $phone = $row["phone"];
-            $address = $row["address"];
-            $password = $row["password"];
-        }
-        $sql = "INSERT INTO `approvedserviceproviders` ( `username`,`servicetype`,`email`,`phone`,`address`, `password`, `dt`) VALUES ('$username','$servicetype','$email','$phone','$address', '$password', current_timestamp())";
-        $result = mysqli_query($conn, $sql);
-        if($result){
-            $query_run2 = mysqli_query($conn, $query2);
-    
-            if($query_run1 && $query_run1)
-            {
-                $_SESSION['approvedprovider'] = "Service Provider is Approved";
-            }
-            else
-            {
-                $_SESSION['approvedprovidererror'] = "Sorry, approval could be processed. Something went wrong";
-            }    
-        }
-        
-    }
-    else{
-        echo ' <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Warning!</strong> Please choose the service type
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        </div> ';
-    }
-    
-}
 ?>
+
 
 
 
@@ -117,53 +72,32 @@ if(isset($_POST['add_btn']))
             </div>
         </nav>
     '
-    ?>
-
+    ?>  
     <?php
-    if(isset($_SESSION['deletedprovider']) && $_SESSION['deletedprovider']!=''){
-        echo ' <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    if(isset($_SESSION['deletedapprovedprovider']) && $_SESSION['deletedapprovedprovider']!=''){
+        echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>Success!</strong> Service Provider Removed
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div> ';
-        unset($_SESSION['deletedprovider']);
+        unset($_SESSION['deletedapprovedprovider']);
     }
-    if(isset($_SESSION['deletedprovidererror']) && $_SESSION['deletedprovidererror']!=''){
+    if(isset($_SESSION['deletedapprovedprovidererror']) && $_SESSION['deletedapprovedprovidererror']!=''){
         echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Error!</strong> '.$_SESSION['deletedprovidererror'].'
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+        <strong>Error!</strong> '.$_SESSION['deletedprovidererror'].'
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
         </div> ';
-        unset($_SESSION['deletedprovidererror']);
-    }
-    if(isset($_SESSION['approvedprovider']) && $_SESSION['approvedprovider']!=''){
-        echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success!</strong> Service Provider Approved
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div> ';
-        unset($_SESSION['approvedprovider']);
-    }
-    if(isset($_SESSION['approvedprovidererror']) && $_SESSION['approvedprovidererror']!=''){
-        echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Error!</strong> '.$_SESSION['deletedprovidererror'].'
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div> ';
-        unset($_SESSION['approvedprovidererror']);
+        unset($_SESSION['deletedapprovedprovidererror']);
     }
     ?>
 
     <div class="container-fluid my-2">
         <div>
-            <a href="/servicelagbe/adminloginsystem/postadminlogin.php" class="btn btn-primary">Service providers
-                request</a>
-            <a href="/servicelagbe/adminloginsystem/approvedserviceproviders.php" class="btn btn-primary">Approved
-                Service providers</a>
+            <a href="/servicelagbe/adminloginsystem/postadminlogin.php"  class="btn btn-primary">Service providers request</a>
+            <a href="/servicelagbe/adminloginsystem/approvedserviceproviders.php"  class="btn btn-primary">Approved Service providers</a>
 
         </div>
         <div class="card shadow mb-4 my-2">
@@ -175,8 +109,8 @@ if(isset($_POST['add_btn']))
 
                     <?php
                     include 'partials/_admindbconnect.php';
-                    $sql = "Select * from serviceproviders";
-                    $query_run =  mysqli_query($conn, $sql);
+                    $sql = "Select * from approvedserviceproviders";
+                     $query_run =  mysqli_query($conn, $sql);
                     ?>
 
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -184,11 +118,11 @@ if(isset($_POST['add_btn']))
                             <tr>
                                 <th> ProviderId </th>
                                 <th> Username </th>
+                                <th>Service Type</th>
                                 <th>Email </th>
                                 <th>Phone</th>
                                 <th>Address</th>
-                                <th>Service Type</th>
-                                <th>Add</th>
+                                <!-- <th>Edit</th> -->
                                 <th>Delete</th>
                             </tr>
                         </thead>
@@ -200,31 +134,15 @@ if(isset($_POST['add_btn']))
                         {
                     ?>
                             <tr>
-                                <td><?php  echo $row['providerid']; ?></td>
+                                <td><?php  echo $row['approvedproviderid']; ?></td>
                                 <td><?php  echo $row['username']; ?></td>
+                                <td><?php  echo $row['servicetype']; ?></td>
                                 <td><?php  echo $row['email']; ?></td>
                                 <td><?php  echo $row['phone']; ?></td>
                                 <td><?php  echo $row['address']; ?></td>
-                                <form action="postadminlogin.php" method="post">
                                 <td>
-                                    <div class="input-group mb-3">
-                                        <select name="servicetype" class="custom-select" id="servicetype" required>
-                                            <option selected>Choose...</option>
-                                            <option value="Ac Service">Ac Service</option>
-                                            <option value="Electrical Service">Electrical Service</option>
-                                            <option value="Car Care Service">Car Care Service</option>
-                                            <option value="Emergency Service">Emergency Service</option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <input type="hidden" name="add_id" value="<?php echo $row['providerid']; ?>">
-                                    <button type="submit" name="add_btn" class="btn btn-success">ADD</button>
-                                </form>
-                                </td>
-                                <td>
-                                    <form action="postadminlogin.php" method="post">
-                                        <input type="hidden" name="delete_id" value="<?php echo $row['providerid']; ?>">
+                                    <form action="approvedserviceproviders.php" method="post">
+                                        <input type="hidden" name="delete_id" value="<?php echo $row['approvedproviderid']; ?>">
                                         <button type="submit" name="delete_btn" class="btn btn-danger"> DELETE</button>
                                     </form>
                                 </td>

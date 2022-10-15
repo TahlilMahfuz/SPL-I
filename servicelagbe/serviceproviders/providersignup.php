@@ -110,7 +110,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
 
             <button type="submit" class="btn btn-primary">SignUp</button><br><br>
-            <a href="/servicelagbe/loginsystem/login.php"  class="btn btn-info">Click here to signup as Client</a>
+            <a href="/servicelagbe/loginsystem/signup.php"  class="btn btn-info">Click here to signup as Client</a>
             <a href="/servicelagbe/adminloginsystem/adminsignup.php"  class="btn btn-info">Click here to signup as Administrator</a>
         </form>
     </div>

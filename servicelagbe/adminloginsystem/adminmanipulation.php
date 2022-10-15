@@ -1,7 +1,6 @@
 <?php
 include 'partials/_admindbconnect.php';
-$delete = false;
-$showError = false;
+
 if(isset($_POST['delete_btn']))
 {
     $id = $_POST['delete_id'];
@@ -12,12 +11,13 @@ if(isset($_POST['delete_btn']))
     if($query_run)
     {
         session_start();
-        $delete = true;
+        $_SESSION['deletedprovider'] = "Service Provider Removed";
         header('Location: postadminlogin.php'); 
     }
     else
     {
-        $showError = "Sorry, Deletion could be processed. Something went wrong";
+        $_SESSION['deletedprovidererror'] = "Sorry, Deletion could be processed. Something went wrong";
+        header('Location: postadminlogin.php'); 
     }    
 }
 ?>

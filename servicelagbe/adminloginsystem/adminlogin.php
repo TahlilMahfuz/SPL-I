@@ -15,7 +15,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             if (password_verify($password, $row['password'])){ 
                 $login = true;
                 session_start();
-                $_SESSION['loggedin'] = true;
+                $_SESSION['adminloggedin'] = true;
                 $_SESSION['email'] = $email;
                 $queryusername="Select username from users where email='$email'";
                 $resultq = $conn->query($queryusername);

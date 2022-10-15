@@ -3,6 +3,9 @@ session_start();
 if(isset($_SESSION['loggedin'])){
     header("location: http://localhost/servicelagbe/postLogin/postuserlogin.php");
 }
+else if(isset($_SESSION['adminloggedin'])){
+    header("location: http://localhost/servicelagbe/adminloginsystem/postadminlogin.php");
+}
 echo'
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/servicelagbe/index.php">ServiceLagbe?</a>
