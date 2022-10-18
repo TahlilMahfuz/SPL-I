@@ -65,35 +65,22 @@ if(isset($_POST['add_btn']))
 }
 
 //Mod running
-// if(isset($_POST['addservicetype']))
-// {
-//     $addservicetype = $_POST['addservicetype'];
-//     $addservicetypecost = $_POST['addservicetypecost'];
-//     $query1 = "INSERT INTO `services` ( `servicetype`,`servicecost`) VALUES ('$addservicetype','$addservicetypecost')";
-//     $query_run1 = mysqli_query($conn, $query1);
-//     if($query_run1){
-//         echo ' <div class="alert alert-successs alert-dismissible fade show" role="alert">
-//         <strong>Successs!</strong> Service has been added.
-//         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-//             <span aria-hidden="true">&times;</span>
-//         </button>
-//         </div> ';
-//     }
-//     else{
-//         echo ' <div class="alert alert-warning alert-dismissible fade show" role="alert">
-//         <strong>Warning!</strong> Sorry!error while inserting service type
-//         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-//             <span aria-hidden="true">&times;</span>
-//         </button>
-//         </div> ';
-//     }
+if(isset($_POST['addservicetypename']))
+{
+    $addservicetypename = $_POST['addservicetypename'];
+    $addservicetypecost = $_POST['addservicetypecost'];
+
+    try{
+        $query1 = "INSERT INTO `services` ( `servicetype`,`servicecost`) VALUES ('$addservicetypename','$addservicetypecost')";
+        $query_run1 = mysqli_query($conn, $query1);
+        $_SESSION['addednewservice'] = "A new service has been added";
+    }
+    catch(Exception $e){
+        $_SESSION['addednewserviceerror']="Service already exists";
+    }
     
-// }
-
-
+}
 ?>
-
-
 
 <!doctype html>
 <html lang="en">
@@ -111,7 +98,6 @@ if(isset($_POST['add_btn']))
 </head>
 
 <body>
-
     <?php
     echo'
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
@@ -183,6 +169,24 @@ if(isset($_POST['add_btn']))
         </div> ';
         unset($_SESSION['approvedprovidererror']);
     }
+    if(isset($_SESSION['addednewservice']) && $_SESSION['addednewservice']!=''){
+        echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Successs!</strong> '.$_SESSION['addednewservice'].'
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div> ';
+        unset($_SESSION['addednewservice']);
+    }
+    if(isset($_SESSION['addednewserviceerror']) && $_SESSION['addednewserviceerror']!=''){
+        echo ' <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Warning!</strong> '.$_SESSION['addednewserviceerror'].'
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div> ';
+        unset($_SESSION['addednewserviceerror']);
+    }
     ?>
 
     <div class="container-fluid my-2">
@@ -197,12 +201,8 @@ if(isset($_POST['add_btn']))
         <div class="card shadow mb-4 my-2">
             <div class="card-header py-3">
                 <h7 class="m-0 font-weight-bold text-info">Admin Profile</h7>
-
-
-
-                <!-- <a href="/servicelagbe/adminloginsystem/adminuserlist.php" class="btn btn-primary">Userlist</a> -->
-                <!-- <button type="button" class="btn btn-secondary my-2" data-toggle="modal" data-target="#exampleModal"
-                    data-whatever="@getbootstrap">Add new service</button>
+                <button type="button" class="btn btn-secondary my-2" data-toggle="modal" data-target="#exampleModal">Add
+                    new service</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -215,38 +215,33 @@ if(isset($_POST['add_btn']))
                             </div>
                             <div class="modal-body">
                                 <form action="postadminlogin.php" method="post">
+
                                     <div class="form-group">
-                                        <label for="addservicetype" class="col-form-label">Service Type:</label>
-                                        <input type="text" class="form-control" id="addservicetype">
+                                        <label for="addservicetypename">Service Type:</label>
+                                        <input type="text" maxlength="20" class="form-control" id="addservicetypename"
+                                            name="addservicetypename" aria-describedby="emailHelp" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="addservicetypecost" class="col-form-label">Service cost:</label>
-                                        <input type="text" class="form-control" id="addservicetypecost">
+                                        <label for="addservicetypecost">Service cost:</label>
+                                        <input type="text" maxlength="20" class="form-control" id="addservicetypecost"
+                                            name="addservicetypecost" aria-describedby="emailHelp" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="masterkey" class="col-form-label">Masterkey:</label>
-                                        <input type="text" class="form-control" id="masterkey">
+                                        <label for="masterkey">Masterkey:</label>
+                                        <input type="password" maxlength="20" class="form-control" id="masterkey"
+                                            name="masterkey" aria-describedby="emailHelp"
+                                            placeholder="Provide the masterkey provided by authority" required>
                                     </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <form action="postadminlogin.php" method="post">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" name="addservice" class="btn btn-primary">Add</button>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="submit" name="addservicetype" class="btn btn-primary">Add</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-                </div> -->
-
-
-
-
-
-
-
-
-
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -255,6 +250,8 @@ if(isset($_POST['add_btn']))
                     include 'partials/_admindbconnect.php';
                     $sql = "Select * from serviceproviders";
                     $query_run =  mysqli_query($conn, $sql);
+                    $sql1 = "Select * from services order by servicetype asc";
+                    $query_run1 =  mysqli_query($conn, $sql1);
                     ?>
 
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -288,10 +285,17 @@ if(isset($_POST['add_btn']))
                                         <div class="input-group mb-3">
                                             <select name="servicetype" class="custom-select" id="servicetype" required>
                                                 <option selected>Choose...</option>
-                                                <option value="Ac Service">Ac Service</option>
-                                                <option value="Electrical Service">Electrical Service</option>
+                                                <?php
+                                                    while($row1=mysqli_fetch_assoc($query_run1))
+                                                    {
+                                                ?>
+                                                <option value="<?php echo $row1['servicetype']; ?>"><?php echo $row1['servicetype']; ?></option>
+                                                    <?php
+                                                }
+                                                ?>
+                                                    <!-- <option value="Electrical Service">Electrical Service</option>
                                                 <option value="Car Care Service">Car Care Service</option>
-                                                <option value="Emergency Service">Emergency Service</option>
+                                                <option value="Emergency Service">Emergency Service</option> -->
                                             </select>
                                         </div>
                                     </td>

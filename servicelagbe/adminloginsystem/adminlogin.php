@@ -75,8 +75,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <form action="/servicelagbe/adminloginsystem/adminlogin.php" method="post">
             <div class="form-group">
                 <label for="masterkey">MasterKey</label>
-                <input type="text" class="form-control" id="masterkey" name="masterkey"
-                    aria-describedby="emailHelp" placeholder="Enter the master key provided by the authority" required>
+                <input type="password" class="form-control" id="masterkey" name="masterkey"
+                    placeholder="Enter the master key provided by the authority" required>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
@@ -87,11 +87,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <label for="password">Password</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
-            
-            
+
+
             <button type="submit" class="btn btn-primary">Login</button><br><br><br>
-                <a href="/servicelagbe/loginsystem/login.php"  class="btn btn-info">Click here to login as Client</a>
-                <a href="/servicelagbe/serviceproviders/providerlogin.php"  class="btn btn-info">Click here to login as ServiceProvider</a>
+            <a href="/servicelagbe/loginsystem/login.php" class="btn btn-info">Click here to login as Client</a>
+            <a href="/servicelagbe/serviceproviders/providerlogin.php" class="btn btn-info">Click here to login as
+                ServiceProvider</a>
         </form>
     </div>
 
