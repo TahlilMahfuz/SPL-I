@@ -90,7 +90,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             
             <div class="form-group">
                 <label for="phone">phone</label>
-                <input type="tel" class="form-control" id="phone" name="phone" maxlength="11" pattern="[0-9]{11}" placeholder="01XXXXXXXXX" required>
+                <input type="tel" class="form-control" id="phone" name="phone" maxlength="11" pattern="[0-9]{11}" placeholder="01XXXXXXXXX(Use only digits)" required>
             </div>
             
             <div class="form-group">

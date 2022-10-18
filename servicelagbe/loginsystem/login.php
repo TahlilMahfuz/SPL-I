@@ -19,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $queryusername="Select username from users where email='$email'";
                 $resultq = $conn->query($queryusername);
                 $_SESSION['username'] = $row["username"];
-                header("location: welcome.php");
+                header("location: /servicelagbe/postLogin/postuserlogin.php");
             } 
             else{
                 $showError = "Invalid Credentials";

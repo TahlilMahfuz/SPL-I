@@ -11,7 +11,6 @@ if(isset($_POST['delete_btn']))
     
     if($query_run)
     {
-        session_start();
         $_SESSION['deletedprovider'] = "Service Provider Removed";
     }
     else
@@ -64,6 +63,34 @@ if(isset($_POST['add_btn']))
     }
     
 }
+
+//Mod running
+// if(isset($_POST['addservicetype']))
+// {
+//     $addservicetype = $_POST['addservicetype'];
+//     $addservicetypecost = $_POST['addservicetypecost'];
+//     $query1 = "INSERT INTO `services` ( `servicetype`,`servicecost`) VALUES ('$addservicetype','$addservicetypecost')";
+//     $query_run1 = mysqli_query($conn, $query1);
+//     if($query_run1){
+//         echo ' <div class="alert alert-successs alert-dismissible fade show" role="alert">
+//         <strong>Successs!</strong> Service has been added.
+//         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+//             <span aria-hidden="true">&times;</span>
+//         </button>
+//         </div> ';
+//     }
+//     else{
+//         echo ' <div class="alert alert-warning alert-dismissible fade show" role="alert">
+//         <strong>Warning!</strong> Sorry!error while inserting service type
+//         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+//             <span aria-hidden="true">&times;</span>
+//         </button>
+//         </div> ';
+//     }
+    
+// }
+
+
 ?>
 
 
@@ -122,7 +149,7 @@ if(isset($_POST['add_btn']))
     <?php
     if(isset($_SESSION['deletedprovider']) && $_SESSION['deletedprovider']!=''){
         echo ' <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Success!</strong> Service Provider Removed
+            <strong>Success!</strong> '.$_SESSION['deletedprovider'].'
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -140,7 +167,7 @@ if(isset($_POST['add_btn']))
     }
     if(isset($_SESSION['approvedprovider']) && $_SESSION['approvedprovider']!=''){
         echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success!</strong> Service Provider Approved
+            <strong>Success!</strong> '.$_SESSION['approvedprovider'].'
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -164,11 +191,62 @@ if(isset($_POST['add_btn']))
                 request</a>
             <a href="/servicelagbe/adminloginsystem/approvedserviceproviders.php" class="btn btn-primary">Approved
                 Service providers</a>
+            <a href="/servicelagbe/adminloginsystem/adminuserlist.php" class="btn btn-primary">Userlist</a>
 
         </div>
         <div class="card shadow mb-4 my-2">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-info">Admin Profile</h6>
+                <h7 class="m-0 font-weight-bold text-info">Admin Profile</h7>
+
+
+
+                <!-- <a href="/servicelagbe/adminloginsystem/adminuserlist.php" class="btn btn-primary">Userlist</a> -->
+                <!-- <button type="button" class="btn btn-secondary my-2" data-toggle="modal" data-target="#exampleModal"
+                    data-whatever="@getbootstrap">Add new service</button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Add a new service</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="postadminlogin.php" method="post">
+                                    <div class="form-group">
+                                        <label for="addservicetype" class="col-form-label">Service Type:</label>
+                                        <input type="text" class="form-control" id="addservicetype">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addservicetypecost" class="col-form-label">Service cost:</label>
+                                        <input type="text" class="form-control" id="addservicetypecost">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="masterkey" class="col-form-label">Masterkey:</label>
+                                        <input type="text" class="form-control" id="masterkey">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <form action="postadminlogin.php" method="post">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" name="addservice" class="btn btn-primary">Add</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+
+
+
+
+
+
+
+
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -206,20 +284,20 @@ if(isset($_POST['add_btn']))
                                 <td><?php  echo $row['phone']; ?></td>
                                 <td><?php  echo $row['address']; ?></td>
                                 <form action="postadminlogin.php" method="post">
-                                <td>
-                                    <div class="input-group mb-3">
-                                        <select name="servicetype" class="custom-select" id="servicetype" required>
-                                            <option selected>Choose...</option>
-                                            <option value="Ac Service">Ac Service</option>
-                                            <option value="Electrical Service">Electrical Service</option>
-                                            <option value="Car Care Service">Car Care Service</option>
-                                            <option value="Emergency Service">Emergency Service</option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <input type="hidden" name="add_id" value="<?php echo $row['providerid']; ?>">
-                                    <button type="submit" name="add_btn" class="btn btn-success">ADD</button>
+                                    <td>
+                                        <div class="input-group mb-3">
+                                            <select name="servicetype" class="custom-select" id="servicetype" required>
+                                                <option selected>Choose...</option>
+                                                <option value="Ac Service">Ac Service</option>
+                                                <option value="Electrical Service">Electrical Service</option>
+                                                <option value="Car Care Service">Car Care Service</option>
+                                                <option value="Emergency Service">Emergency Service</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="add_id" value="<?php echo $row['providerid']; ?>">
+                                        <button type="submit" name="add_btn" class="btn btn-success">ADD</button>
                                 </form>
                                 </td>
                                 <td>

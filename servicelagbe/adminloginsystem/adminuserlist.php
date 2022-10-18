@@ -6,22 +6,19 @@ if(isset($_POST['delete_btn']))
 {
     $id = $_POST['delete_id'];
     
-    $query = "DELETE FROM approvedserviceproviders WHERE approvedproviderid='$id' ";
+    $query = "DELETE FROM users WHERE id='$id' ";
     $query_run = mysqli_query($conn, $query);
     
     if($query_run)
     {
-        $_SESSION['deletedapprovedprovider'] = "Service Provider Removed";
+        $_SESSION['deleteduser'] = "User Removed";
     }
     else
     {
-        $_SESSION['deletedapprovedprovidererror'] = "Sorry, Deletion could be processed. Something went wrong";
+        $_SESSION['deletedusererror'] = "Sorry, Deletion could be processed. Something went wrong";
     }    
 }
 ?>
-
-
-
 
 <!doctype html>
 <html lang="en">
@@ -74,23 +71,23 @@ if(isset($_POST['delete_btn']))
     '
     ?>  
     <?php
-    if(isset($_SESSION['deletedapprovedprovider']) && $_SESSION['deletedapprovedprovider']!=''){
+    if(isset($_SESSION['deleteduser']) && $_SESSION['deleteduser']!=''){
         echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>Success!</strong> Service Provider Removed
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div> ';
-        unset($_SESSION['deletedapprovedprovider']);
+        unset($_SESSION['deleteduser']);
     }
-    if(isset($_SESSION['deletedapprovedprovidererror']) && $_SESSION['deletedapprovedprovidererror']!=''){
+    if(isset($_SESSION['deleteduserror']) && $_SESSION['deletedusererror']!=''){
         echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Error!</strong> '.$_SESSION['deletedprovidererror'].'
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         </button>
         </div> ';
-        unset($_SESSION['deletedapprovedprovidererror']);
+        unset($_SESSION['deletedusererror']);
     }
     ?>
 
@@ -110,20 +107,17 @@ if(isset($_POST['delete_btn']))
 
                     <?php
                     include 'partials/_admindbconnect.php';
-                    $sql = "Select * from approvedserviceproviders";
+                    $sql = "Select * from users";
                      $query_run =  mysqli_query($conn, $sql);
                     ?>
 
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th> ProviderId </th>
+                                <th> UserId </th>
                                 <th> Username </th>
-                                <th>Service Type</th>
                                 <th>Email </th>
                                 <th>Phone</th>
-                                <th>Address</th>
-                                <!-- <th>Edit</th> -->
                                 <th>Delete</th>
                             </tr>
                         </thead>
@@ -135,15 +129,13 @@ if(isset($_POST['delete_btn']))
                         {
                     ?>
                             <tr>
-                                <td><?php  echo $row['approvedproviderid']; ?></td>
+                                <td><?php  echo $row['id']; ?></td>
                                 <td><?php  echo $row['username']; ?></td>
-                                <td><?php  echo $row['servicetype']; ?></td>
                                 <td><?php  echo $row['email']; ?></td>
                                 <td><?php  echo $row['phone']; ?></td>
-                                <td><?php  echo $row['address']; ?></td>
                                 <td>
-                                    <form action="approvedserviceproviders.php" method="post">
-                                        <input type="hidden" name="delete_id" value="<?php echo $row['approvedproviderid']; ?>">
+                                    <form action="adminuserlist.php" method="post">
+                                        <input type="hidden" name="delete_id" value="<?php echo $row['id']; ?>">
                                         <button type="submit" name="delete_btn" class="btn btn-danger"> DELETE</button>
                                     </form>
                                 </td>
