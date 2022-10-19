@@ -64,19 +64,24 @@ if(isset($_POST['add_btn']))
     
 }
 
-//Mod running
+
 if(isset($_POST['addservicetypename']))
 {
     $addservicetypename = $_POST['addservicetypename'];
     $addservicetypecost = $_POST['addservicetypecost'];
-
-    try{
-        $query1 = "INSERT INTO `services` ( `servicetype`,`servicecost`) VALUES ('$addservicetypename','$addservicetypecost')";
-        $query_run1 = mysqli_query($conn, $query1);
-        $_SESSION['addednewservice'] = "A new service has been added";
+    $postadminmasterkey = $_POST['postadminmasterkey'];
+    if($postadminmasterkey=='1234'){
+        try{
+            $query1 = "INSERT INTO `services` ( `servicetype`,`servicecost`) VALUES ('$addservicetypename','$addservicetypecost')";
+            $query_run1 = mysqli_query($conn, $query1);
+            $_SESSION['addednewservice'] = "A new service has been added";
+        }
+        catch(Exception $e){
+            $_SESSION['addednewserviceerror']="Service already exists";
+        }
     }
-    catch(Exception $e){
-        $_SESSION['addednewserviceerror']="Service already exists";
+    else{
+        $_SESSION['postadminmasterkeyerror']="Invalid masterkey";
     }
     
 }
@@ -141,6 +146,15 @@ if(isset($_POST['addservicetypename']))
             </button>
         </div> ';
         unset($_SESSION['deletedprovider']);
+    }
+    if(isset($_SESSION['postadminmasterkeyerror']) && $_SESSION['postadminmasterkeyerror']!=''){
+        echo ' <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> '.$_SESSION['postadminmasterkeyerror'].'
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div> ';
+        unset($_SESSION['postadminmasterkeyerror']);
     }
     if(isset($_SESSION['deletedprovidererror']) && $_SESSION['deletedprovidererror']!=''){
         echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -227,9 +241,9 @@ if(isset($_POST['addservicetypename']))
                                             name="addservicetypecost" aria-describedby="emailHelp" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="masterkey">Masterkey:</label>
-                                        <input type="password" maxlength="20" class="form-control" id="masterkey"
-                                            name="masterkey" aria-describedby="emailHelp"
+                                        <label for="postadminmasterkey">Master key:</label>
+                                        <input type="password" maxlength="20" class="form-control" id="postadminmasterkey"
+                                            name="postadminmasterkey" aria-describedby="emailHelp"
                                             placeholder="Provide the masterkey provided by authority" required>
                                     </div>
                                     <div class="modal-footer">

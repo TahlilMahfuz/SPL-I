@@ -3,32 +3,32 @@ $login = false;
 $showError = false;
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     include 'partials/_admindbconnect.php';
-    $email = $_POST["email"];
-    $password = $_POST["password"]; 
-    $masterkey = $_POST["masterkey"]; 
+    $adminemail = $_POST["adminemail"];
+    $adminpassword = $_POST["adminpassword"]; 
+    $adminmasterkey = $_POST["adminmasterkey"]; 
     
-    $sql = "Select * from users where email='$email'";
+    $sql = "Select * from admins where email='$adminemail'";
     $result = mysqli_query($conn, $sql);
     $num = mysqli_num_rows($result);
-    if ($num == 1 && $masterkey=='1234'){
+    if ($num == 1 && $adminmasterkey=='1234'){
         while($row=mysqli_fetch_assoc($result)){  
-            if (password_verify($password, $row['password'])){ 
+            if (password_verify($adminpassword, $row['password'])){ 
                 $login = true;
                 session_start();
                 $_SESSION['adminloggedin'] = true;
-                $_SESSION['email'] = $email;
-                $queryusername="Select username from users where email='$email'";
+                $_SESSION['adminemail'] = $adminemail;
+                $queryusername="Select username from admins where email='$adminemail'";
                 $resultq = $conn->query($queryusername);
                 $_SESSION['username'] = $row["username"];
                 header("location: postadminlogin.php");
             } 
             else{
-                $showError = "Invalid Credentials";
+                $showError = "Invalid Credentials1";
             }
         }
     } 
     else{
-        $showError = "Invalid Credentials";
+        $showError = "Invalid Credentials2";
     }
 }
     
@@ -74,25 +74,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <h1 class="text-center">Login to ServiceLagbe as Administrator</h1>
         <form action="/servicelagbe/adminloginsystem/adminlogin.php" method="post">
             <div class="form-group">
-                <label for="masterkey">MasterKey</label>
-                <input type="password" class="form-control" id="masterkey" name="masterkey"
-                    placeholder="Enter the master key provided by the authority" required>
+                <label for="adminmasterkey">MasterKey</label>
+                <input type="password" class="form-control" id="adminmasterkey" name="adminmasterkey"
+                    aria-describedby="emailHelp" placeholder="Enter the master key provided by the authority" required>
             </div>
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
+                <label for="adminemail">Email</label>
+                <input type="email" class="form-control" id="adminemail" name="adminemail" aria-describedby="emailHelp" required>
 
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
+                <label for="adminpassword">Password</label>
+                <input type="password" class="form-control" id="adminpassword" name="adminpassword" required>
             </div>
-
-
+            
+            
             <button type="submit" class="btn btn-primary">Login</button><br><br><br>
-            <a href="/servicelagbe/loginsystem/login.php" class="btn btn-info">Click here to login as Client</a>
-            <a href="/servicelagbe/serviceproviders/providerlogin.php" class="btn btn-info">Click here to login as
-                ServiceProvider</a>
+                <a href="/servicelagbe/loginsystem/login.php"  class="btn btn-info">Click here to login as Client</a>
+                <a href="/servicelagbe/serviceproviders/providerlogin.php"  class="btn btn-info">Click here to login as ServiceProvider</a>
         </form>
     </div>
 

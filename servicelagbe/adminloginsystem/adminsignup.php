@@ -3,36 +3,46 @@ $showAlert = false;
 $showError = false;
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     include 'partials/_admindbconnect.php';
-    $username = $_POST["username"];
-    $email = $_POST["email"];
-    $phone = $_POST["phone"];
-    $address = $_POST["address"];
-    $password = $_POST["password"];
-    $cpassword = $_POST["cpassword"];
+    $adminusername = $_POST["adminusername"];
+    $adminemail = $_POST["adminemail"];
+    $adminphone = $_POST["adminphone"];
+    $adminaddress = $_POST["adminaddress"];
+    $adminpassword = $_POST["adminpassword"];
+    $admincpassword = $_POST["admincpassword"];
+    $adminsignupmasterkey = $_POST["adminsignupmasterkey"];
     // $exists=false;
 
-    // Check whether this username exists
-    $existSql = "SELECT * FROM `admins` WHERE email = '$email'";
-    $result = mysqli_query($conn, $existSql);
-    $numExistRows = mysqli_num_rows($result);
-    if($numExistRows > 0){
-        // $exists = true;
-        $showError = "An account already exists against this email";
-    }
-    else{
-        // $exists = false; 
-        if(($password == $cpassword)){
-            $hash = password_hash($password, PASSWORD_DEFAULT);
-            $sql = "INSERT INTO `admins` ( `username`,`email`,`phone`,`address`, `password`, `dt`) VALUES ('$username','$email','$phone', '$hash','$address', current_timestamp())";
-            $result = mysqli_query($conn, $sql);
-            if ($result){
-                $showAlert = true;
-            }
+    $exists=false;
+    if($adminsignupmasterkey=='1234'){
+        // Check whether this username exists
+        $existSql = "SELECT * FROM `admins` WHERE email = '$adminemail'";
+        $result = mysqli_query($conn, $existSql);
+        $numExistRows = mysqli_num_rows($result);
+        if($numExistRows > 0){
+            // $exists = true;
+            $showError = "An account already exists against this email";
         }
         else{
-            $showError = "Passwords do not match";
+            // $exists = false; 
+            if(($adminpassword == $admincpassword)){
+                $hash = password_hash($adminpassword, PASSWORD_DEFAULT);
+                $sql = "INSERT INTO `admins` ( `username`,`email`,`phone`,`address`, `password`, `dt`) VALUES ('$adminusername','$adminemail','$adminphone', '$adminaddress','$hash', current_timestamp())";
+                $result = mysqli_query($conn, $sql);
+                if ($result){
+                    $showAlert = true;
+                }
+            }
+            else{
+                $showError = "Passwords do not match";
+            }
         }
     }
+    else {
+        $showError = "Invalid Masterkey";
+    }
+
+
+    
 }
     
 ?>
@@ -77,35 +87,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <h1 class="text-center">Signup to ServiceLagbe as Administrator</h1>
         <form action="/servicelagbe/adminloginsystem/adminsignup.php" method="post">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" maxlength="20" class="form-control" id="username" name="username"
+                <label for="adminsignupmasterkey">Master Key</label>
+                <input type="password" maxlength="23" class="form-control" id="adminsignupmasterkey" name="adminsignupmasterkey" placeholder="Enter the master key provided by the authority" required>
+            </div>
+            <div class="form-group">
+                <label for="adminusername">Username</label>
+                <input type="text" maxlength="20" class="form-control" id="adminusername" name="adminusername"
                     aria-describedby="emailHelp" placeholder="Not email" required>
             </div>
-            
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" maxlength="50" class="form-control" id="email" name="email"
+                <label for="adminemail">Email</label>
+                <input type="email" maxlength="50" class="form-control" id="adminemail" name="adminemail"
                 aria-describedby="emailHelp" required>
             </div>
             
             <div class="form-group">
-                <label for="phone">phone</label>
-                <input type="tel" class="form-control" id="phone" name="phone" maxlength="11" pattern="[0-9]{11}" placeholder="01XXXXXXXXX(Use only digits)" required>
+                <label for="adminphone">phone</label>
+                <input type="tel" class="form-control" id="adminphone" name="adminphone" maxlength="11" pattern="[0-9]{11}" placeholder="01XXXXXXXXX(Use only digits)" required>
             </div>
             
             <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" class="form-control" id="address" name="address"
+                <label for="adminaddress">Address</label>
+                <input type="text" class="form-control" id="adminaddress" name="adminaddress"
                     aria-describedby="emailHelp" placeholder="Not email" required>
             </div>
             
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" maxlength="23" class="form-control" id="password" name="password" required>
+                <label for="adminpassword">Password</label>
+                <input type="password" maxlength="23" class="form-control" id="adminpassword" name="adminpassword" required>
             </div>
             <div class="form-group">
-                <label for="cpassword">Confirm Password</label>
-                <input type="password" maxlength="23" class="form-control" id="cpassword" name="cpassword" required>
+                <label for="admincpassword">Confirm Password</label>
+                <input type="password" maxlength="23" class="form-control" id="admincpassword" name="admincpassword" required>
                 <small id="emailHelp" class="form-text text-muted">Make sure to type the same password</small>
             </div>
 
