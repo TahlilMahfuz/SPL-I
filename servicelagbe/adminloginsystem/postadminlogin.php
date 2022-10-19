@@ -264,8 +264,8 @@ if(isset($_POST['addservicetypename']))
                     include 'partials/_admindbconnect.php';
                     $sql = "Select * from serviceproviders";
                     $query_run =  mysqli_query($conn, $sql);
-                    $sql1 = "Select * from services order by servicetype asc";
-                    $query_run1 =  mysqli_query($conn, $sql1);
+                    // $sql1 = "Select * from services order by servicetype asc";
+                    // $query_run1 =  mysqli_query($conn, $sql1);
                     ?>
 
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -300,11 +300,15 @@ if(isset($_POST['addservicetypename']))
                                             <select name="servicetype" class="custom-select" id="servicetype" required>
                                                 <option selected>Choose...</option>
                                                 <?php
+                                                $sql1 = "Select * from services order by servicetype asc";
+                                                $query_run1 =  mysqli_query($conn, $sql1);
+                                                if(mysqli_num_rows($query_run1) > 0){        
                                                     while($row1=mysqli_fetch_assoc($query_run1))
                                                     {
                                                 ?>
                                                 <option value="<?php echo $row1['servicetype']; ?>"><?php echo $row1['servicetype']; ?></option>
                                                     <?php
+                                                    }
                                                 }
                                                 ?>
                                                     <!-- <option value="Electrical Service">Electrical Service</option>

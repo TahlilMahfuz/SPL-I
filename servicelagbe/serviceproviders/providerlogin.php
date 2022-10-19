@@ -6,7 +6,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $email = $_POST["email"];
     $password = $_POST["password"]; 
     
-    $sql = "Select * from serviceproviders where email='$email'";
+    $sql = "Select * from approvedserviceproviders where email='$email'";
     $result = mysqli_query($conn, $sql);
     $num = mysqli_num_rows($result);
     if ($num == 1){
@@ -16,19 +16,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 session_start();
                 $_SESSION['loggedin'] = true;
                 $_SESSION['email'] = $email;
-                $queryusername="Select * from serviceproviders where email='$email'";
+                $queryusername="Select * from approvedserviceproviders where email='$email'";
                 $resultq = $conn->query($queryusername);
                 $_SESSION['username'] = $row["username"];
                 header("location: postproviderlogin.php");
             } 
             else{
-                $showError = "Invalid Credentials   ";
+                $showError = "Invalid Credentials";
             }
         }
         
     } 
     else{
-        $showError = "Invalid Credentials 1";
+        $showError = "Invalid Credentials";
     }
 }
     

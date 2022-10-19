@@ -109,7 +109,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="form-group">
                 <label for="adminaddress">Address</label>
                 <input type="text" class="form-control" id="adminaddress" name="adminaddress"
-                    aria-describedby="emailHelp" placeholder="Not email" required>
+                    aria-describedby="emailHelp" required>
             </div>
             
             <div class="form-group">
