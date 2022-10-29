@@ -88,7 +88,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <form action="/servicelagbe/adminloginsystem/adminsignup.php" method="post">
             <div class="form-group">
                 <label for="adminsignupmasterkey">Master Key</label>
-                <input type="password" maxlength="23" class="form-control" id="adminsignupmasterkey" name="adminsignupmasterkey" placeholder="Enter the master key provided by the authority" required>
+                <input type="password" maxlength="23" class="form-control" id="adminsignupmasterkey"
+                    name="adminsignupmasterkey" placeholder="Enter the master key provided by the authority" required>
             </div>
             <div class="form-group">
                 <label for="adminusername">Username</label>
@@ -98,33 +99,37 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="form-group">
                 <label for="adminemail">Email</label>
                 <input type="email" maxlength="50" class="form-control" id="adminemail" name="adminemail"
-                aria-describedby="emailHelp" required>
+                    aria-describedby="emailHelp" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="adminphone">phone</label>
-                <input type="tel" class="form-control" id="adminphone" name="adminphone" maxlength="11" pattern="[0-9]{11}" placeholder="01XXXXXXXXX(Use only digits)" required>
+                <input type="tel" class="form-control" id="adminphone" name="adminphone" maxlength="11"
+                    pattern="[0-9]{11}" placeholder="01XXXXXXXXX(Use only digits)" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="adminaddress">Address</label>
                 <input type="text" class="form-control" id="adminaddress" name="adminaddress"
                     aria-describedby="emailHelp" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="adminpassword">Password</label>
-                <input type="password" maxlength="23" class="form-control" id="adminpassword" name="adminpassword" required>
+                <input type="password" maxlength="23" class="form-control" id="adminpassword" name="adminpassword"
+                    required>
             </div>
             <div class="form-group">
                 <label for="admincpassword">Confirm Password</label>
-                <input type="password" maxlength="23" class="form-control" id="admincpassword" name="admincpassword" required>
+                <input type="password" maxlength="23" class="form-control" id="admincpassword" name="admincpassword"
+                    required>
                 <small id="emailHelp" class="form-text text-muted">Make sure to type the same password</small>
             </div>
 
             <button type="submit" class="btn btn-primary">SignUp</button><br><br>
-            <a href="/servicelagbe/serviceproviders/providersignup.php"  class="btn btn-info">Click here to signup as ServiceProvider</a>
-            <a href="/servicelagbe/loginsystem/signup.php"  class="btn btn-info">Click here to signup as Client</a>
+            <a href="/servicelagbe/serviceproviders/providersignup.php" class="btn btn-info">Click here to signup as
+                ServiceProvider</a>
+            <a href="/servicelagbe/loginsystem/signup.php" class="btn btn-info">Click here to signup as Client</a>
         </form>
     </div>
 

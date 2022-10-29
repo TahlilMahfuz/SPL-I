@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    
+
     <?php
     session_start();
     echo'
@@ -53,6 +53,9 @@
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
+                    
+                <button type="submit" class="btn btn-primary">Cart</button>
+
                 <div class="mx-2">
                 <li class="nav-item dropdown">
                 <a class="btn btn-success" href="#" id="navbarDropdown" role="button"
@@ -77,15 +80,17 @@
                     <img src="/servicelagbe/img/ac.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">Ac Service</h5>
+                        <h7 class="card-title">BDT 2000</h7>
                         <p class="card-text"></p>
-                        <a href="/servicelagbe/postlogin/acservice.php" class="btn btn-primary">Show all AC service providers</a>
+                        <a href="/servicelagbe/postlogin/acservice.php" class="btn btn-primary">Show all AC service
+                            providers</a>
                     </div>
                 </div>
             </div>
 
-            
 
-            
+
+
         </div>
     </div>
 

@@ -16,8 +16,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 session_start();
                 $_SESSION['loggedin'] = true;
                 $_SESSION['email'] = $email;
-                $queryusername="Select username from users where email='$email'";
+                $queryusername="Select * from users where email='$email'";
                 $resultq = $conn->query($queryusername);
+                $_SESSION['userid'] = $row["id"];
                 $_SESSION['username'] = $row["username"];
                 header("location: /servicelagbe/postLogin/postuserlogin.php");
             } 

@@ -54,6 +54,9 @@ if(isset($_POST['appoint_btn']))
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
+
+                <button type="submit" class="btn btn-primary">Cart</button>
+
                 <div class="mx-2">
                 <li class="nav-item dropdown">
                 <a class="btn btn-success" href="#" id="navbarDropdown" role="button"
