@@ -22,7 +22,7 @@ session_start();
     <?php
     echo'
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">ServiceLagbe?</a>
+            <a class="navbar-brand" href="/servicelagbe/index.php">ServiceLagbe?</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -30,20 +30,40 @@ session_start();
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/servicelagbe/index.php">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Services
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
 
-                <button type="submit" class="btn btn-primary">Cart</button>
+                <a href="/servicelagbe/postlogin/appointedservices.php" class="btn btn-warning mx-2">Appointed Services</a>
 
                 <div class="mx-2">
                 <li class="nav-item dropdown">
                 <a class="btn btn-success" href="#" id="navbarDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <p class="text-light my-0 mx-2">Welcome Administrator '.$_SESSION['username'].' </p>
+                    <p class="text-light my-0 mx-2">Welcome '.$_SESSION['username'].' </p>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">Profile</a>
@@ -77,32 +97,41 @@ session_start();
     ?>
 
     <div class="container-fluid my-2">
-        <div>
-            <a href="/servicelagbe/postlogin/acservice.php"  class="btn btn-primary">Service provider list</a>
-            <a href="/servicelagbe/postlogin/appointedacservice.php"  class="btn btn-primary">Appointed service providers</a>
-        </div>
         <div class="card shadow mb-4 my-2">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-info">Profile</h6>
+                <h6 class="m-0 font-weight-bold text-info">Appointed Services</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
 
                     <?php
-                    include 'partials/_admindbconnect.php';
-                    $sql = "Select * from serviceproviders where servicetype="Ac Service"";
-                     $query_run =  mysqli_query($conn, $sql);
+                    $server = "localhost";
+                    $username = "root";
+                    $password = "";
+                    $database = "servicelagbe";
+                    
+                    $conn = mysqli_connect($server, $username, $password, $database);
+                    if (!$conn){
+                        die("Error". mysqli_connect_error());
+                    }
+                    
+                    
+                    $userid = $_SESSION['userid'];
+                    $sql = "Select * from userprovider where userid='$userid'";
+                    $query_run =  mysqli_query($conn, $sql);
                     ?>
 
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th> OrderId </th>
                                 <th> ProviderId </th>
-                                <th> Username </th>
-                                <th>Email </th>
-                                <th>Phone</th>
-                                <th>Address</th>
-                                <th>Appoint</th>
+                                <th> Provider Username </th>
+                                <th> Provider Email </th>
+                                <th> Provider Phone </th>
+                                <th> Service Type </th>
+                                <th> Service Cost </th>
+                                <th> Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -113,17 +142,31 @@ session_start();
                         {
                     ?>
                             <tr>
+                                <td><?php  echo $row['orderid']; ?></td>
                                 <td><?php  echo $row['providerid']; ?></td>
-                                <td><?php  echo $row['username']; ?></td>
-                                <td><?php  echo $row['email']; ?></td>
-                                <td><?php  echo $row['phone']; ?></td>
-                                <td><?php  echo $row['address']; ?></td>
-                                <td>
-                                    <form action="appointedservices.php" method="post">
-                                        <input type="hidden" name="appoint_id" value="<?php echo $row['providerid']; ?>">
-                                        <button type="submit" name="appoint_btn" class="btn btn-danger"> Appoint</button>
-                                    </form>
-                                </td>
+                                <td><?php  echo $row['providerusername']; ?></td>
+                                <td><?php  echo $row['provideremail']; ?></td>
+                                <td><?php  echo $row['providerphone']; ?></td>
+                                <td><?php  echo $row['servicetype']; ?></td>
+                                <td><?php  echo $row['servicecost']; ?></td>
+                                <!-- appointmentstatus -->
+                                <?php
+                                    if($row['appointstatus']==1){
+                                        ?>
+                                            <td>
+                                                <form action="appointedservices.php" method="post">
+                                                    <input type="hidden" name="deleteorder" value="<?php echo $row['orderid']; ?>">
+                                                    <button type="submit" name="deleteorder" class="btn btn-danger">Send delete request</button>
+                                                </form>
+                                            </td>
+                                        <?php
+                                    }
+                                    else{
+                                        ?>
+                                            <td><?php  echo 'Service Provided' ?></td>
+                                        <?php
+                                    }
+                                ?>
                             </tr>
                             <?php
                         } 
