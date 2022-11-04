@@ -1,3 +1,66 @@
+<?php
+session_start();
+if(isset($_POST['appointuserservicetype']))
+{
+    $server = "localhost";
+    $username = "root";
+    $password = "";
+    $database = "servicelagbe";
+    
+    $conn = mysqli_connect($server, $username, $password, $database);
+    if (!$conn){
+        die("Error". mysqli_connect_error());
+    }
+
+    $type = $_POST['appointuserservicetype'];
+    $cost = $_POST['appointuserservicecost'];
+    $userlocation= $_POST['appointuserlocation'];
+    $userid = $_SESSION['userid'];
+    $userphone = $_SESSION['userphone'];
+
+    $sql = "select * from approvedserviceproviders natural join services where servicetype='Ac Service' and availability=1 order by rating asc limit 1";
+    $query_run =  mysqli_query($conn, $sql);
+
+    if(mysqli_num_rows($query_run) > 0)        
+    {
+        while($row = mysqli_fetch_assoc($query_run))
+        {
+            $providerid=$row['approvedproviderid'];
+            $providerusername=$row['username'];
+            $rating=$row['rating'];
+            $servicecount=$row['servicecount'];
+            $provideremail=$row['email'];
+            $providerphone=$row['phone'];
+            $provideraddress=$row['address'];
+        }
+    }
+
+    $sql1 = "INSERT INTO `userprovider` ( `userid`,`userlocation`,`providerid`,`userphone`,`providerusername`, `provideremail`,`providerphone`,`provideraddress`,`servicetype`,`servicecost`, `dt`) VALUES ('$userid','$userlocation','$providerid','$userphone','$providerusername', '$provideremail','$providerphone','$provideraddress','$type','$cost', current_timestamp())";
+    
+    if($query_run){
+        $query_run2 = mysqli_query($conn, $sql1);
+        $queryupdate = "UPDATE approvedserviceproviders SET availability=0 WHERE approvedproviderid='$providerid'";
+        $query_run3 = mysqli_query($conn, $queryupdate);
+
+        if($query_run && $query_run2 &&$query_run3)
+        {
+            $_SESSION['appointrequest'] = "Request for appointment sent";
+        }
+        else
+        {
+            $_SESSION['appointrequesterror'] = "Sorry, could not find any service provider for your area.";
+        }    
+    }
+    else{
+        echo ' <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Warning!</strong> Could not find service provider
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div> ';
+    }
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -16,7 +79,6 @@
 <body>
 
     <?php
-    session_start();
     echo'
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="/servicelagbe/index.php">ServiceLagbe?</a>
@@ -53,14 +115,14 @@
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
-                    
-                <button type="submit" class="btn btn-primary">Cart</button>
+
+                <a href="/servicelagbe/postlogin/appointedservices.php" class="btn btn-warning mx-2">Appointed Services</a>
 
                 <div class="mx-2">
                 <li class="nav-item dropdown">
                 <a class="btn btn-success" href="#" id="navbarDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <p class="text-light my-0 mx-2">Welcome '. $_SESSION['username']. ' </p>
+                    <p class="text-light my-0 mx-2">Welcome '.$_SESSION['username'].' </p>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">Profile</a>
@@ -72,22 +134,122 @@
         </nav>
     '
     ?>
+    <?php
+    if(isset($_SESSION['appointrequest']) && $_SESSION['appointrequest']!=''){
+        echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> '.$_SESSION['appointrequest'].'
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div> ';
+        unset($_SESSION['appointrequest']);
+    }
+    if(isset($_SESSION['appointrequesterror']) && $_SESSION['appointrequesterror']!=''){
+        echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> '.$_SESSION['appointrequesterror'].'
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div> ';
+        unset($_SESSION['appointrequesterror']);
+    }
+    ?>
+    <?php
+        $server = "localhost";
+        $username = "root";
+        $password = "";
+        $database = "servicelagbe";
+        
+        $conn = mysqli_connect($server, $username, $password, $database);
+        if (!$conn){
+            die("Error". mysqli_connect_error());
+        }
+        $sql = "select * from services order by servicetype asc";
+        $query_run =  mysqli_query($conn, $sql);
+    ?>
 
     <div class="container">
         <div class="row">
+            <?php
+            if(mysqli_num_rows($query_run) > 0)        
+            {
+                while($row = mysqli_fetch_assoc($query_run))
+                {
+            ?>
             <div class="col-md-4">
                 <div class="card my-4" style="width: 18rem;">
                     <img src="/servicelagbe/img/ac.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Ac Service</h5>
-                        <h7 class="card-title">BDT 2000</h7>
+                        <h5 class="card-title"><?php  echo $row['servicetype']; ?></h5>
+                        <h7 class="card-title">BDT <?php  echo $row['servicecost']; ?></h7>
                         <p class="card-text"></p>
-                        <a href="/servicelagbe/postlogin/acservice.php" class="btn btn-primary">Show all AC service
-                            providers</a>
+                        <!-- <button type="submit" name="appoint_btn" class="btn btn-primary">
+                        Appoint <?php  echo $row['servicetype']; ?></button> -->
+
+
+
+
+                        <button type="button" class="btn btn-primary my-2" data-toggle="modal"
+                            data-target="#exampleModal">Appoint <?php  echo $row['servicetype']; ?></button>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Appoint
+                                            <?php  echo $row['servicetype'];?></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="postuserlogin.php" method="post">
+
+                                            <div class="form-group">
+                                                <label for="appointuserservicetype">Service Type:</label>
+                                                <input type="text" maxlength="20" class="form-control"
+                                                    id="appointuserservicetype" name="appointuserservicetype"
+                                                    aria-describedby="emailHelp"
+                                                    value="<?php  echo $row['servicetype'];?>" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="appointuserservicecost">Service cost:</label>
+                                                <input type="text" maxlength="20" class="form-control"
+                                                    id="appointuserservicecost" name="appointuserservicecost"
+                                                    aria-describedby="emailHelp"
+                                                    value="<?php  echo $row['servicecost'];?>" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="appointuserlocation">Location:</label>
+                                                <input type="text" maxlength="20" class="form-control"
+                                                    id="appointuserlocation" name="appointuserlocation"
+                                                    aria-describedby="emailHelp">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" name="appointuserservice"
+                                                    class="btn btn-success">Request</button>
+                                                <button type="button" class="btn btn-danger"
+                                                    data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
                     </div>
                 </div>
             </div>
-
+            <?php
+                } 
+            }
+            else {
+                echo "No Record Found";
+            }
+        ?>
 
 
 

@@ -1,23 +1,5 @@
 <?php
 session_start();
-include 'partials/_admindbconnect.php';
-
-if(isset($_POST['appoint_btn']))
-{
-    $id = $_POST['appointacprovider'];
-    
-    $query = "DELETE FROM users WHERE id='$id' ";
-    $query_run = mysqli_query($conn, $query);
-    
-    if($query_run)
-    {
-        $_SESSION['deleteduser'] = "User Removed";
-    }
-    else
-    {
-        $_SESSION['deletedusererror'] = "Sorry, Deletion could be processed. Something went wrong";
-    }    
-}
 ?>
 
 <!doctype html>
@@ -61,7 +43,7 @@ if(isset($_POST['appoint_btn']))
                 <li class="nav-item dropdown">
                 <a class="btn btn-success" href="#" id="navbarDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <p class="text-light my-0 mx-2">Welcome Administrator '. $_SESSION['username']. ' </p>
+                    <p class="text-light my-0 mx-2">Welcome Administrator '.$_SESSION['username'].' </p>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">Profile</a>
