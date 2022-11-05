@@ -16,10 +16,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 session_start();
                 $_SESSION['loggedin'] = true;
                 $_SESSION['email'] = $email;
-                $queryusername="Select * from users where email='$email'";
-                $resultq = $conn->query($queryusername);
+                // $queryusername="Select * from users where email='$email'";
+                // $resultq = $conn->query($queryusername);
                 $_SESSION['userid'] = $row["id"];
                 $_SESSION['username'] = $row["username"];
+                $_SESSION['userphone'] = $row["phone"];
                 header("location: /servicelagbe/postLogin/postuserlogin.php");
             } 
             else{
@@ -81,7 +82,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <label for="password">Password</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
-            
+            <div>
+                <small id="emailHelp" class="form-text text-muted"><a href="/servicelagbe/loginsystem/userforgotpassword.php">Forgot password?</a></small><br>
+            </div>
             
             <button type="submit" class="btn btn-primary">Login</button><br><br><br>
                 <a href="/servicelagbe/adminloginsystem/adminlogin.php"  class="btn btn-info">Click here to login as Administrator</a>

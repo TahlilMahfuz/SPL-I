@@ -16,85 +16,48 @@
 <body>
     <?php include 'partials/_header.php';?>
 
+    <?php
+        $server = "localhost";
+        $username = "root";
+        $password = "";
+        $database = "servicelagbe";
+        
+        $conn = mysqli_connect($server, $username, $password, $database);
+        if (!$conn){
+            die("Error". mysqli_connect_error());
+        }
+        $sql = "select * from services order by servicetype asc";
+        $query_run =  mysqli_query($conn, $sql);
+    ?>
+
     <div class="container">
         <div class="row">
+            <?php
+                    if(mysqli_num_rows($query_run) > 0)        
+                    {
+                        while($row = mysqli_fetch_assoc($query_run))
+                        {
+                    ?>
             <div class="col-md-4">
                 <div class="card my-4" style="width: 18rem;">
                     <img src="/servicelagbe/img/ac.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <h5 class="card-title"><?php  echo $row['servicetype']; ?></h5>
+                        <h7 class="card-title">BDT <?php  echo $row['servicecost']; ?></h7>
+                        <p class="card-text"></p>
+                        <a href="/servicelagbe/loginsystem/login.php" class="btn btn-primary">Appoint
+                            <?php  echo $row['servicetype']; ?></a>
                     </div>
                 </div>
             </div>
+            <?php
+                        } 
+                    }
+                    else {
+                        echo "No Record Found";
+                    }
+                    ?>
 
-            <div class="col-md-4">
-                <div class="card my-4" style="width: 18rem;">
-                    <img src="/servicelagbe/img/ac.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card my-4" style="width: 18rem;">
-                    <img src="/servicelagbe/img/ac.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card my-4" style="width: 18rem;">
-                    <img src="/servicelagbe/img/ac.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card my-2" style="width: 18rem;">
-                    <img src="/servicelagbe/img/ac.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card my-2" style="width: 18rem;">
-                    <img src="/servicelagbe/img/ac.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
 
 
         </div>
