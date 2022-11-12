@@ -15,10 +15,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $login = true;
                 session_start();
                 $_SESSION['loggedin'] = true;
-                $_SESSION['email'] = $email;
-                $queryusername="Select * from approvedserviceproviders where email='$email'";
-                $resultq = $conn->query($queryusername);
+                $_SESSION['email'] = $row["email"];
                 $_SESSION['username'] = $row["username"];
+                $_SESSION['providerid'] = $row["approvedproviderid"];
+                //$queryusername="Select * from approvedserviceproviders where email='$email'";
+                // $resultq = $conn->query($queryusername);
                 header("location: postproviderlogin.php");
             } 
             else{

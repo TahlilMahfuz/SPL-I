@@ -17,6 +17,7 @@ if(isset($_POST['appointuserservicetype']))
     $userlocation= $_POST['appointuserlocation'];
     $userid = $_SESSION['userid'];
     $userphone = $_SESSION['userphone'];
+    $useraddress = $_SESSION['useraddress'];
 
     $sql = "select * from approvedserviceproviders natural join services where servicetype='Ac Service' and availability=1 order by rating asc limit 1";
     $query_run =  mysqli_query($conn, $sql);
@@ -35,7 +36,8 @@ if(isset($_POST['appointuserservicetype']))
         }
     }
 
-    $sql1 = "INSERT INTO `userprovider` ( `userid`,`userlocation`,`providerid`,`userphone`,`providerusername`, `provideremail`,`providerphone`,`provideraddress`,`servicetype`,`servicecost`, `dt`) VALUES ('$userid','$userlocation','$providerid','$userphone','$providerusername', '$provideremail','$providerphone','$provideraddress','$type','$cost', current_timestamp())";
+    $sql1 = "INSERT INTO `userprovider` ( `useraddress`,`userid`,`userlocation`,`providerid`,`userphone`,`providerusername`, `provideremail`,`providerphone`,`provideraddress`,`servicetype`,`servicecost`, `dt`) 
+                VALUES ('$useraddress','$userid','$userlocation','$providerid','$userphone','$providerusername', '$provideremail','$providerphone','$provideraddress','$type','$cost', current_timestamp())";
     
     if($query_run){
         $query_run2 = mysqli_query($conn, $sql1);

@@ -117,7 +117,7 @@ session_start();
                     
                     
                     $userid = $_SESSION['userid'];
-                    $sql = "Select * from userprovider where userid='$userid'";
+                    $sql = "Select * from userprovider where userid='$userid' && appointstatus=0";
                     $query_run =  mysqli_query($conn, $sql);
                     ?>
 
@@ -131,7 +131,6 @@ session_start();
                                 <th> Provider Phone </th>
                                 <th> Service Type </th>
                                 <th> Service Cost </th>
-                                <th> Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -149,8 +148,9 @@ session_start();
                                 <td><?php  echo $row['providerphone']; ?></td>
                                 <td><?php  echo $row['servicetype']; ?></td>
                                 <td><?php  echo $row['servicecost']; ?></td>
+
                                 <!-- appointmentstatus -->
-                                <?php
+                                <!-- <?php
                                     if($row['appointstatus']==1){
                                         ?>
                                             <td>
@@ -166,7 +166,8 @@ session_start();
                                             <td><?php  echo 'Service Provided' ?></td>
                                         <?php
                                     }
-                                ?>
+                                ?> -->
+
                             </tr>
                             <?php
                         } 

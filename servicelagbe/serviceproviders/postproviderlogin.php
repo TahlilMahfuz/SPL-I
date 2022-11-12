@@ -1,3 +1,113 @@
+<?php
+    session_start();
+    $server = "localhost";
+    $username = "root";
+    $password = "";
+    $database = "servicelagbe";
+    
+    $conn = mysqli_connect($server, $username, $password, $database);
+    if (!$conn){
+        die("Error". mysqli_connect_error());
+    }
+
+    //Send email implementation
+
+    require '../includes/PHPMailer.php';
+    require '../includes/SMTP.php';
+    require '../includes/Exception.php';
+
+
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
+
+    function send_password_reset($recipient,$subject,$message)
+    {   
+        $mail = new PHPMailer();
+        //Server settings
+        $mail->isSMTP();
+        $mail->SMTPAuth = true;                                            //Send using SMTP
+        $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+        $mail->Username   = 'servicelagbe@gmail.com';                     //SMTP username
+        $mail->Password   = 'wxuwuadxffntbxsr';                               //SMTP password
+        $mail->SMTPSecure = 'tls';            //Enable implicit TLS encryption
+        $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        $mail->addAddress($recipient, "recipient-name");     //Add a recipient
+
+        //Recipients
+        $mail->setFrom('servicelagbe@gmail.com', 'ServiceLagbe');
+        
+        // $mail->addAddress('ellen@example.com');               //Name is optional
+        // $mail->addReplyTo('info@example.com', 'Information');
+        // $mail->addCC('cc@example.com');
+        // $mail->addBCC('bcc@example.com');
+
+        //Attachments
+        // $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+        // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+
+        //Content
+        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->Subject = $subject;
+        $content = $message;
+        $mail->msgHTML($content);
+        $mail->Body    = $message;
+        $mail->AltBody = 'Please let this message go through...non-html client';
+
+        if(!$mail->send()){
+            echo"Error while sending Email. ";
+            var_dump($mail);
+        }
+    }
+    
+
+
+
+    if(isset($_POST['arrived-btn'])){
+        $_SESSION['notarrived']="true";
+        $acceptedemail=$_SESSION["email"];
+        $providerid=$_SESSION['providerid'];
+        $token=rand()%1000000;
+
+        $forgotemail="servicelagbe@gmail.com";
+        send_password_reset($forgotemail,"Service Provider Varification code",$token);
+        send_password_reset($forgotemail,"Service Provider Varification code",$token);
+        
+        echo 
+            ' <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Email sent successfully.</strong> "Please provide the token to client and assure your identity."
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div> ';
+        
+    }
+
+
+    if(isset($_POST["done-btn"])){
+        $order=$_SESSION["order"];
+        $sqlupdate = "UPDATE userprovider SET appointstatus=1 WHERE orderid='$order'";
+        $query_run_update =  mysqli_query($conn, $sqlupdate);
+
+        if($query_run_update){
+            //send email implemention required
+            //header("location:providerpayment.php");
+        }
+        else{
+            echo 
+            ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> "Something went wrong!"
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div> ';
+        }
+    }
+?>
+
+
+
 <!doctype html>
 <html lang="en">
 
@@ -14,9 +124,9 @@
 </head>
 
 <body>
-    
+
     <?php
-    session_start();
+    //session_start();
     echo'
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="/servicelagbe/index.php">ServiceLagbe?</a>
@@ -69,6 +179,112 @@
         </nav>
     '
     ?>
+
+    <div class="container-fluid my-2">
+        <div class="card shadow mb-4 my-2">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-info">Appointed Services</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <?php
+                    $server = "localhost";
+                    $username = "root";
+                    $password = "";
+                    $database = "servicelagbe";
+                    
+                    $conn = mysqli_connect($server, $username, $password, $database);
+                    if (!$conn){
+                        die("Error". mysqli_connect_error());
+                    }
+
+                    {
+                        $appointedproviderid = $_SESSION['providerid'];
+                        $sql = "Select * from userprovider where providerid='$appointedproviderid' and appointstatus=0";
+                        $query_run =  mysqli_query($conn, $sql);
+                        ?>
+
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th> OrderId </th>
+                                    <th> ProviderId </th>
+                                    <th> Provider Username </th>
+                                    <th> Provider Email </th>
+                                    <th> User Phone </th>
+                                    <th> User Address </th>
+                                    <th> User Location </th>
+                                    <th> Service Type </th>
+                                    <th> Service Cost </th>
+                                    <th> Status </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                        if(mysqli_num_rows($query_run) > 0)        
+                        {
+                            while($row = mysqli_fetch_assoc($query_run))
+                            {
+                        ?>
+                                <tr>
+                                    <td><?php  echo $row['orderid'];$_SESSION['order']=$row['orderid'] ?></td>
+                                    <td><?php  echo $row['providerid']; ?></td>
+                                    <td><?php  echo $row['providerusername']; ?></td>
+                                    <td><?php  echo $row['provideremail']; ?></td>
+                                    <td><?php  echo $row['userphone']; ?></td>
+                                    <td><?php  echo $row['useraddress']; ?></td>
+                                    <td><?php  echo $row['userlocation']; ?></td>
+                                    <td><?php  echo $row['servicetype']; ?></td>
+                                    <td><?php  echo $row['servicecost'];$_SESSION['providerpayment']=$row['servicecost']?></td>
+
+                                    <!-- Status -->
+                                    <?php
+                                        if(!isset($_SESSION['notarrived'])){
+                                            ?>
+                                    <td>
+                                        <form action="postproviderlogin.php" method="post">
+                                            <input type="hidden" name="arrived-btn" value="<?php echo $row['orderid']; ?>">
+                                            <button type="submit" name="arrived-btn"
+                                                class="btn btn-warning">Arrived</button>
+                                        </form>
+                                    </td>
+                                    <?php
+                                        }
+                                        else{
+                                            ?>
+                                    <td>
+                                        <form action="postproviderlogin.php" method="post">
+                                            <input type="hidden" name="done-btn" value="<?php echo $row['orderid']; ?>">
+                                            <button type="submit" name="done-btn" class="btn btn-success">Done</button>
+                                        </form>
+                                    </td>
+                                    <?php
+                                        }
+                                    ?>
+
+                                </tr>
+                                <?php
+                            } 
+                        }
+                        else {
+                            echo "No Record Found";
+                        }
+                    }
+
+
+                    
+                    
+                    
+                    ?>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 
     <!-- Optional JavaScript -->

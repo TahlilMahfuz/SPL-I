@@ -21,6 +21,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $_SESSION['userid'] = $row["id"];
                 $_SESSION['username'] = $row["username"];
                 $_SESSION['userphone'] = $row["phone"];
+                $_SESSION['useraddress'] = $row["address"];
                 header("location: /servicelagbe/postLogin/postuserlogin.php");
             } 
             else{
