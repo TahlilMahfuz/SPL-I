@@ -30,7 +30,7 @@
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'servicelagbe@gmail.com';                     //SMTP username
-        $mail->Password   = '***************';                               //SMTP password
+        $mail->Password   = '**************';                               //SMTP password
         $mail->SMTPSecure = 'tls';            //Enable implicit TLS encryption
         $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
         $mail->addAddress($recipient, "recipient-name");     //Add a recipient
@@ -86,14 +86,18 @@
 
 
     if(isset($_POST["done-btn"])){
+        $proid=$_SESSION['providerid'];
         $order=$_SESSION["order"];
         $sqlupdate = "UPDATE userprovider SET appointstatus=1 WHERE orderid='$order'";
-        $servicecountvariable=$_SESSION['servicecount'];
-        $updateservicecount = "UPDATE approvedserviceproviders SET servicecount=$servicecountvariable+1 WHERE email='$provideremail'";
+        $sqlupdate2 = "UPDATE approvedserviceproviders SET availability=1 WHERE approvedproviderid='$proid'";
+        // $servicecountvariable=$_SESSION['servicecount'];
+        // $servicecountvariable++;
+        // $updateservicecount = "UPDATE approvedserviceproviders SET servicecount='$servicecountvariable' WHERE email='$provideremail'";
         $query_run_update =  mysqli_query($conn, $sqlupdate);
-        $query_run_update1 =  mysqli_query($conn, $updateservicecount);
+        $query_run_update2 =  mysqli_query($conn, $sqlupdate2);
+        // $query_run_update1 =  mysqli_query($conn, $updateservicecount);
 
-        if($query_run_update && $query_run_update1){
+        if($query_run_update && $query_run_update2){
             //send email implemention required
             //implement user payment portion
                 //as user logs in session will automatically tell him to pay. As he presses done review system arrives.

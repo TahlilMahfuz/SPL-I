@@ -87,7 +87,7 @@
                     <button type="submit" name="returntomain-btn" class="btn btn-success">PAID</button>
                 </form>
             </div>
-        </div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

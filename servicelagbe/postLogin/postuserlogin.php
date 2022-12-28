@@ -81,6 +81,28 @@ if(isset($_POST['appointuserservicetype']))
 </head>
 
 <body>
+    <?php
+        $server = "localhost";
+        $username = "root";
+        $password = "";
+        $database = "servicelagbe";
+        
+        $conn = mysqli_connect($server, $username, $password, $database);
+        if (!$conn){
+            die("Error". mysqli_connect_error());
+        }
+        $checkuserid=$_SESSION['userid'];
+        $sqlcheck = "select * from userprovider where appointstatus=1 and userid='$checkuserid'";
+        $query_check =  mysqli_query($conn, $sqlcheck);
+        if(mysqli_num_rows($query_check) > 0){
+            while($row = mysqli_fetch_assoc($query_check))
+            {
+                $_SESSION['providername']=$row['providerusername'];
+                $_SESSION['providerid']=$row['providerid'];
+            }
+            header("location:addratetoprovider.php");
+        }
+    ?>
 
     <?php
     echo'
@@ -187,8 +209,8 @@ if(isset($_POST['appointuserservicetype']))
                         <h5 class="card-title"><?php  echo $row['servicetype']; ?></h5>
                         <h7 class="card-title">BDT <?php  echo $row['servicecost']; ?></h7>
                         <p class="card-text"></p>
-                        <!-- <button type="submit" name="appoint_btn" class="btn btn-primary">
-                        Appoint <?php  echo $row['servicetype']; ?></button> -->
+
+                        
 
 
 
@@ -206,6 +228,9 @@ if(isset($_POST['appointuserservicetype']))
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
+
+
+
                                     <div class="modal-body">
                                         <form action="postuserlogin.php" method="post">
 
@@ -237,6 +262,8 @@ if(isset($_POST['appointuserservicetype']))
                                             </div>
                                         </form>
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
