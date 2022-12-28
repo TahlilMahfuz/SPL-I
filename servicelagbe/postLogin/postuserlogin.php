@@ -17,9 +17,14 @@ if(isset($_POST['appointuserservicetype']))
     $userlocation= $_POST['appointuserlocation'];
     $userid = $_SESSION['userid'];
     $userphone = $_SESSION['userphone'];
-    $useraddress = $_SESSION['useraddress'];
+    $useraddress = $_POST['appointuserlocation'];
 
-    $sql = "select * from approvedserviceproviders natural join services where servicetype='Ac Service' and availability=1 order by rating asc limit 1";
+    $sql = "select * from approvedserviceproviders natural join services 
+            where approvedserviceproviders.servicetype='$type'
+            and approvedserviceproviders.availability=1 and address='$useraddress'
+            order by rating asc limit 1";
+    
+
     $query_run =  mysqli_query($conn, $sql);
 
     if(mysqli_num_rows($query_run) > 0)        
@@ -30,16 +35,13 @@ if(isset($_POST['appointuserservicetype']))
             $providerusername=$row['username'];
             $rating=$row['rating'];
             $servicecount=$row['servicecount'];
+            $_SESSION['servicecount']=$row['servicecount'];
             $provideremail=$row['email'];
             $providerphone=$row['phone'];
             $provideraddress=$row['address'];
         }
-    }
-
-    $sql1 = "INSERT INTO `userprovider` ( `useraddress`,`userid`,`userlocation`,`providerid`,`userphone`,`providerusername`, `provideremail`,`providerphone`,`provideraddress`,`servicetype`,`servicecost`, `dt`) 
-                VALUES ('$useraddress','$userid','$userlocation','$providerid','$userphone','$providerusername', '$provideremail','$providerphone','$provideraddress','$type','$cost', current_timestamp())";
-    
-    if($query_run){
+        $sql1 = "INSERT INTO `userprovider` (`userid`,`userlocation`,`providerid`,`userphone`,`providerusername`, `provideremail`,`providerphone`,`provideraddress`,`servicetype`,`servicecost`, `dt`) 
+                VALUES ('$userid','$userlocation','$providerid','$userphone','$providerusername', '$provideremail','$providerphone','$provideraddress','$type','$cost', current_timestamp())";
         $query_run2 = mysqli_query($conn, $sql1);
         $queryupdate = "UPDATE approvedserviceproviders SET availability=0 WHERE approvedproviderid='$providerid'";
         $query_run3 = mysqli_query($conn, $queryupdate);
@@ -55,7 +57,7 @@ if(isset($_POST['appointuserservicetype']))
     }
     else{
         echo ' <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Warning!</strong> Could not find service provider
+        <strong>Warning!</strong> Sorry, could not find any service provider for your area
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>

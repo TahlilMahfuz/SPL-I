@@ -30,7 +30,7 @@
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'servicelagbe@gmail.com';                     //SMTP username
-        $mail->Password   = '****************';                               //SMTP password
+        $mail->Password   = '***************';                               //SMTP password
         $mail->SMTPSecure = 'tls';            //Enable implicit TLS encryption
         $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
         $mail->addAddress($recipient, "recipient-name");     //Add a recipient
@@ -88,11 +88,17 @@
     if(isset($_POST["done-btn"])){
         $order=$_SESSION["order"];
         $sqlupdate = "UPDATE userprovider SET appointstatus=1 WHERE orderid='$order'";
+        $servicecountvariable=$_SESSION['servicecount'];
+        $updateservicecount = "UPDATE approvedserviceproviders SET servicecount=$servicecountvariable+1 WHERE email='$provideremail'";
         $query_run_update =  mysqli_query($conn, $sqlupdate);
+        $query_run_update1 =  mysqli_query($conn, $updateservicecount);
 
-        if($query_run_update){
+        if($query_run_update && $query_run_update1){
             //send email implemention required
-            //header("location:providerpayment.php");
+            //implement user payment portion
+                //as user logs in session will automatically tell him to pay. As he presses done review system arrives.
+                //then everything becomes normal.
+            header("location:providerpayment.php");
         }
         else{
             echo 
@@ -187,7 +193,6 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-
                     <?php
                     $server = "localhost";
                     $username = "root";
@@ -198,7 +203,7 @@
                     if (!$conn){
                         die("Error". mysqli_connect_error());
                     }
-
+                    
                     {
                         $appointedproviderid = $_SESSION['providerid'];
                         $sql = "Select * from userprovider where providerid='$appointedproviderid' and appointstatus=0";
@@ -213,7 +218,6 @@
                                     <th> Provider Username </th>
                                     <th> Provider Email </th>
                                     <th> User Phone </th>
-                                    <th> User Address </th>
                                     <th> User Location </th>
                                     <th> Service Type </th>
                                     <th> Service Cost </th>
@@ -233,7 +237,6 @@
                                     <td><?php  echo $row['providerusername']; ?></td>
                                     <td><?php  echo $row['provideremail']; ?></td>
                                     <td><?php  echo $row['userphone']; ?></td>
-                                    <td><?php  echo $row['useraddress']; ?></td>
                                     <td><?php  echo $row['userlocation']; ?></td>
                                     <td><?php  echo $row['servicetype']; ?></td>
                                     <td><?php  echo $row['servicecost'];$_SESSION['providerpayment']=$row['servicecost']?></td>
