@@ -13,7 +13,15 @@ if(isset($_POST['appointuserservicetype']))
     }
 
     $type = $_POST['appointuserservicetype'];
-    $cost = $_POST['appointuserservicecost'];
+    $findcost="select servicecost from services where servicetype='$type'";
+    $query_findcost=mysqli_query($conn,$findcost);
+    if(mysqli_num_rows($query_findcost) > 0)        
+    {
+        while($row = mysqli_fetch_assoc($query_findcost))
+        {
+            $cost=$row['servicecost'];
+        }
+    }
     $userlocation= $_POST['appointuserlocation'];
     $userid = $_SESSION['userid'];
     $userphone = $_SESSION['userphone'];
@@ -210,43 +218,43 @@ if(isset($_POST['appointuserservicetype']))
                         <h7 class="card-title">BDT <?php  echo $row['servicecost']; ?></h7>
                         <p class="card-text"></p>
 
-                        
-
-
-
 
                         <button type="button" class="btn btn-primary my-2" data-toggle="modal"
                             data-target="#exampleModal">Appoint <?php  echo $row['servicetype']; ?></button>
+
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Appoint
-                                            <?php  echo $row['servicetype'];?></h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Select your service</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-
-
-
                                     <div class="modal-body">
                                         <form action="postuserlogin.php" method="post">
-
                                             <div class="form-group">
                                                 <label for="appointuserservicetype">Service Type:</label>
-                                                <input type="text" maxlength="20" class="form-control"
-                                                    id="appointuserservicetype" name="appointuserservicetype"
-                                                    aria-describedby="emailHelp"
-                                                    value="<?php  echo $row['servicetype'];?>" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="appointuserservicecost">Service cost:</label>
-                                                <input type="text" maxlength="20" class="form-control"
-                                                    id="appointuserservicecost" name="appointuserservicecost"
-                                                    aria-describedby="emailHelp"
-                                                    value="<?php  echo $row['servicecost'];?>" readonly>
+                                                <div class="input-group mb-3">
+                                                    <select name="appointuserservicetype" class="custom-select" id="appointuserservicetype"
+                                                        required>
+                                                        <option selected>Choose...</option>
+                                                        <?php
+                                                $sql1 = "Select * from services order by servicetype asc";
+                                                $query_run1 =  mysqli_query($conn, $sql1);
+                                                if(mysqli_num_rows($query_run1) > 0){        
+                                                    while($row1=mysqli_fetch_assoc($query_run1))
+                                                    {
+                                                ?>
+                                                        <option value="<?php echo $row1['servicetype']; ?>">
+                                                            <?php echo $row1['servicetype']; ?></option>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="appointuserlocation">Location:</label>
@@ -262,14 +270,9 @@ if(isset($_POST['appointuserservicetype']))
                                             </div>
                                         </form>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
-
-
-
 
                     </div>
                 </div>
