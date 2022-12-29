@@ -45,11 +45,12 @@ if(isset($_POST['appointuserservicetype']))
             $servicecount=$row['servicecount'];
             $_SESSION['servicecount']=$row['servicecount'];
             $provideremail=$row['email'];
+            $useremail=$_SESSION['email'];
             $providerphone=$row['phone'];
             $provideraddress=$row['address'];
         }
-        $sql1 = "INSERT INTO `userprovider` (`userid`,`userlocation`,`providerid`,`userphone`,`providerusername`, `provideremail`,`providerphone`,`provideraddress`,`servicetype`,`servicecost`, `dt`) 
-                VALUES ('$userid','$userlocation','$providerid','$userphone','$providerusername', '$provideremail','$providerphone','$provideraddress','$type','$cost', current_timestamp())";
+        $sql1 = "INSERT INTO `userprovider` (`useremail`,`userid`,`userlocation`,`providerid`,`userphone`,`providerusername`, `provideremail`,`providerphone`,`provideraddress`,`servicetype`,`servicecost`, `dt`) 
+                VALUES ('$useremail','$userid','$userlocation','$providerid','$userphone','$providerusername', '$provideremail','$providerphone','$provideraddress','$type','$cost', current_timestamp())";
         $query_run2 = mysqli_query($conn, $sql1);
         $queryupdate = "UPDATE approvedserviceproviders SET availability=0 WHERE approvedproviderid='$providerid'";
         $query_run3 = mysqli_query($conn, $queryupdate);

@@ -30,7 +30,7 @@
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'servicelagbe@gmail.com';                     //SMTP username
-        $mail->Password   = '**************';                               //SMTP password
+        $mail->Password   = '************';                               //SMTP password
         $mail->SMTPSecure = 'tls';            //Enable implicit TLS encryption
         $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
         $mail->addAddress($recipient, "recipient-name");     //Add a recipient
@@ -70,9 +70,33 @@
         $providerid=$_SESSION['providerid'];
         $token=rand()%1000000;
 
-        $forgotemail="servicelagbe@gmail.com";
-        send_password_reset($forgotemail,"Service Provider Varification code",$token);
-        send_password_reset($forgotemail,"Service Provider Varification code",$token);
+        
+        $server = "localhost";
+        $username = "root";
+        $password = "";
+        $database = "servicelagbe";
+
+        $conn = mysqli_connect($server, $username, $password, $database);
+        if (!$conn){
+            die("Error". mysqli_connect_error());
+        }
+        $ordernumber=$_SESSION['order'];
+        $sqlorder="select * from userprovider where orderid='$ordernumber'";
+        $query_run5 =  mysqli_query($conn, $sqlorder);
+        if(mysqli_num_rows($query_run5) > 0)        
+        {
+            while($row = mysqli_fetch_assoc($query_run5))
+            {
+                $usermail=$row['useremail'];
+                $providermail=$row['provideremail'];
+            }
+        }
+        send_password_reset($usermail,"Service Provider Varification code",$token);
+        send_password_reset($providermail,"Service Provider Varification code",$token);
+        
+        // $forgotemail="servicelagbe@gmail.com";
+        // send_password_reset($forgotemail,"Service Provider Varification code",$token);
+        // send_password_reset($forgotemail,"Service Provider Varification code",$token);
         
         echo 
             ' <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -220,7 +244,7 @@
                                     <th> OrderId </th>
                                     <th> ProviderId </th>
                                     <th> Provider Username </th>
-                                    <th> Provider Email </th>
+                                    <th> User Email </th>
                                     <th> User Phone </th>
                                     <th> User Location </th>
                                     <th> Service Type </th>
@@ -239,11 +263,11 @@
                                     <td><?php  echo $row['orderid'];$_SESSION['order']=$row['orderid'] ?></td>
                                     <td><?php  echo $row['providerid']; ?></td>
                                     <td><?php  echo $row['providerusername']; ?></td>
-                                    <td><?php  echo $row['provideremail']; ?></td>
+                                    <td><?php  echo $row['useremail']; $_SESSION['useremail']=$row['useremail'];?></td>
                                     <td><?php  echo $row['userphone']; ?></td>
                                     <td><?php  echo $row['userlocation']; ?></td>
                                     <td><?php  echo $row['servicetype']; ?></td>
-                                    <td><?php  echo $row['servicecost'];$_SESSION['providerpayment']=$row['servicecost']?></td>
+                                    <td><?php  echo $row['servicecost'];$_SESSION['providerpayment']=$row['servicecost'];?></td>
 
                                     <!-- Status -->
                                     <?php
