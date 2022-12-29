@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2022 at 06:37 AM
+-- Generation Time: Dec 29, 2022 at 05:29 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -76,7 +76,7 @@ CREATE TABLE `approvedserviceproviders` (
 --
 
 INSERT INTO `approvedserviceproviders` (`approvedproviderid`, `username`, `servicetype`, `servicecount`, `availability`, `rating`, `email`, `phone`, `address`, `password`, `dt`) VALUES
-(41, 'providerTest', 'Ac Service', 0, 0, 4.5, 'providertest@gmail.com', '12313123124', 'dhaka', '$2y$10$rYBM4AjLmrIJ34Ou7aZUVuSS6Vkki2ZOEK36vWRJoM3YH3Fh/Bdj.', '2022-10-19 11:56:41'),
+(41, 'providerTest', 'Ac Service', 0, 1, 4.5, 'providertest@gmail.com', '12313123124', 'dhaka', '$2y$10$rYBM4AjLmrIJ34Ou7aZUVuSS6Vkki2ZOEK36vWRJoM3YH3Fh/Bdj.', '2022-10-19 11:56:41'),
 (42, 'ProviderTahlil', 'Car Care', 0, 1, 4.5, 'tahlilkfaiyaz@gmail.com', '12313123124', 'dhaka', '$2y$10$dcRtf5LB0ai28R8o4U5SL.9BTqmHkhVsWdWojC2FYxX8VPf1G1Pme', '2022-10-19 12:33:23'),
 (44, 'ProviderTahlil', 'Ac Service', 0, 1, 4.5, 'p@gmail.com', '12313123124', 'dhaka', '$2y$10$3ksqMoakl..TPAhNvEqrG.VgE0DJk/XGJUwCh8OvZp9mlVrhnYQCS', '2022-10-19 14:48:54');
 
@@ -136,6 +136,7 @@ INSERT INTO `services` (`servicetype`, `servicecost`) VALUES
 CREATE TABLE `userprovider` (
   `orderid` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
+  `useremail` varchar(200) NOT NULL,
   `userlocation` varchar(100) DEFAULT NULL,
   `providerid` int(11) NOT NULL,
   `userphone` varchar(20) NOT NULL,
@@ -155,8 +156,10 @@ CREATE TABLE `userprovider` (
 -- Dumping data for table `userprovider`
 --
 
-INSERT INTO `userprovider` (`orderid`, `userid`, `userlocation`, `providerid`, `userphone`, `providerusername`, `provideremail`, `providerphone`, `provideraddress`, `servicetype`, `servicecost`, `appointstatus`, `comment`, `token`, `dt`) VALUES
-(24, 20, 'dhaka', 41, '12314151515', 'providerTest', 'providertest@gmail.com', '12313123124', 'dhaka', 'Ac Service', 2000, 1, '', '', '2022-12-27 22:43:48');
+INSERT INTO `userprovider` (`orderid`, `userid`, `useremail`, `userlocation`, `providerid`, `userphone`, `providerusername`, `provideremail`, `providerphone`, `provideraddress`, `servicetype`, `servicecost`, `appointstatus`, `comment`, `token`, `dt`) VALUES
+(27, 20, '', 'dhaka', 44, '12314151515', 'ProviderTahlil', 'p@gmail.com', '12313123124', 'dhaka', 'Ac Service', 2000, 2, '', '', '2022-12-28 16:34:06'),
+(28, 20, '', 'dhaka', 41, '12314151515', 'providerTest', 'providertest@gmail.com', '12313123124', 'dhaka', 'Ac Service', 2000, 2, '', '', '2022-12-28 20:46:21'),
+(29, 20, 'tahlilmahfuz@iut-dha', 'dhaka', 41, '12314151515', 'providerTest', 'providertest@gmail.com', '12313123124', 'dhaka', 'Ac Service', 2000, 1, '', '', '2022-12-29 22:23:43');
 
 -- --------------------------------------------------------
 
@@ -256,7 +259,7 @@ ALTER TABLE `serviceproviders`
 -- AUTO_INCREMENT for table `userprovider`
 --
 ALTER TABLE `userprovider`
-  MODIFY `orderid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `orderid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `users`
