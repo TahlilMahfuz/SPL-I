@@ -30,7 +30,7 @@
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'servicelagbe@gmail.com';                     //SMTP username
-        $mail->Password   = '************';                               //SMTP password
+        $mail->Password   = '*************';                               //SMTP password
         $mail->SMTPSecure = 'tls';            //Enable implicit TLS encryption
         $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
         $mail->addAddress($recipient, "recipient-name");     //Add a recipient
@@ -94,9 +94,9 @@
         send_password_reset($usermail,"Service Provider Varification code",$token);
         send_password_reset($providermail,"Service Provider Varification code",$token);
         
-        // $forgotemail="servicelagbe@gmail.com";
-        // send_password_reset($forgotemail,"Service Provider Varification code",$token);
-        // send_password_reset($forgotemail,"Service Provider Varification code",$token);
+        // $sendtothisemail="servicelagbe@gmail.com";
+        // send_password_reset($sendtothisemail,"Service Provider Varification code",$token);
+        // send_password_reset($sendtothisemail,"Service Provider Varification code",$token);
         
         echo 
             ' <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -246,6 +246,7 @@
                                     <th> Provider Username </th>
                                     <th> User Email </th>
                                     <th> User Phone </th>
+                                    <th> User Detailed Location </th>
                                     <th> User Location </th>
                                     <th> Service Type </th>
                                     <th> Service Cost </th>
@@ -265,6 +266,7 @@
                                     <td><?php  echo $row['providerusername']; ?></td>
                                     <td><?php  echo $row['useremail']; $_SESSION['useremail']=$row['useremail'];?></td>
                                     <td><?php  echo $row['userphone']; ?></td>
+                                    <td><?php  echo $row['detailedlocation']; ?></td>
                                     <td><?php  echo $row['userlocation']; ?></td>
                                     <td><?php  echo $row['servicetype']; ?></td>
                                     <td><?php  echo $row['servicecost'];$_SESSION['providerpayment']=$row['servicecost'];?></td>

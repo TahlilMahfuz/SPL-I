@@ -48,9 +48,10 @@ if(isset($_POST['appointuserservicetype']))
             $useremail=$_SESSION['email'];
             $providerphone=$row['phone'];
             $provideraddress=$row['address'];
+            $detailedlocation=$_POST['appointuserdetailedlocation'];
         }
-        $sql1 = "INSERT INTO `userprovider` (`useremail`,`userid`,`userlocation`,`providerid`,`userphone`,`providerusername`, `provideremail`,`providerphone`,`provideraddress`,`servicetype`,`servicecost`, `dt`) 
-                VALUES ('$useremail','$userid','$userlocation','$providerid','$userphone','$providerusername', '$provideremail','$providerphone','$provideraddress','$type','$cost', current_timestamp())";
+        $sql1 = "INSERT INTO `userprovider` (`detailedlocation`,`useremail`,`userid`,`userlocation`,`providerid`,`userphone`,`providerusername`, `provideremail`,`providerphone`,`provideraddress`,`servicetype`,`servicecost`, `dt`) 
+                VALUES ('$detailedlocation','$useremail','$userid','$userlocation','$providerid','$userphone','$providerusername', '$provideremail','$providerphone','$provideraddress','$type','$cost', current_timestamp())";
         $query_run2 = mysqli_query($conn, $sql1);
         $queryupdate = "UPDATE approvedserviceproviders SET availability=0 WHERE approvedproviderid='$providerid'";
         $query_run3 = mysqli_query($conn, $queryupdate);
@@ -238,8 +239,8 @@ if(isset($_POST['appointuserservicetype']))
                                             <div class="form-group">
                                                 <label for="appointuserservicetype">Service Type:</label>
                                                 <div class="input-group mb-3">
-                                                    <select name="appointuserservicetype" class="custom-select" id="appointuserservicetype"
-                                                        required>
+                                                    <select name="appointuserservicetype" class="custom-select"
+                                                        id="appointuserservicetype" required>
                                                         <option selected>Choose...</option>
                                                         <?php
                                                 $sql1 = "Select * from services order by servicetype asc";
@@ -259,8 +260,35 @@ if(isset($_POST['appointuserservicetype']))
                                             </div>
                                             <div class="form-group">
                                                 <label for="appointuserlocation">Location:</label>
-                                                <input type="text" maxlength="20" class="form-control"
+
+                                                <!-- <input type="text" maxlength="20" class="form-control"
                                                     id="appointuserlocation" name="appointuserlocation"
+                                                    aria-describedby="emailHelp"> -->
+
+                                                <div class="input-group mb-3">
+                                                    <select name="appointuserlocation" class="custom-select"
+                                                        id="appointuserlocation" required>
+                                                        <option selected>Choose...</option>
+                                                        <?php
+                                                $sql1 = "Select * from approvedserviceproviders";
+                                                $query_run1 =  mysqli_query($conn, $sql1);
+                                                if(mysqli_num_rows($query_run1) > 0){        
+                                                    while($row1=mysqli_fetch_assoc($query_run1))
+                                                    {
+                                                ?>
+                                                        <option value="<?php echo $row1['address']; ?>">
+                                                            <?php echo $row1['address']; ?></option>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="appointuserdetailedlocation">Detailed Location:</label>
+                                                <input type="text" maxlength="20" class="form-control"
+                                                    id="appointuserdetailedlocation" name="appointuserdetailedlocation"
                                                     aria-describedby="emailHelp">
                                             </div>
                                             <div class="modal-footer">
