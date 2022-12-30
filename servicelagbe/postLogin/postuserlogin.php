@@ -270,7 +270,7 @@ if(isset($_POST['appointuserservicetype']))
                                                         id="appointuserlocation" required>
                                                         <option selected>Choose...</option>
                                                         <?php
-                                                $sql1 = "Select * from approvedserviceproviders";
+                                                $sql1 = "Select distinct(address) from approvedserviceproviders";
                                                 $query_run1 =  mysqli_query($conn, $sql1);
                                                 if(mysqli_num_rows($query_run1) > 0){        
                                                     while($row1=mysqli_fetch_assoc($query_run1))
